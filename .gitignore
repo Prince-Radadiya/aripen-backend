@@ -1,0 +1,26 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# XAMPP / Environment
+*.log
+*.env
+.env.*
+
+# Composer dependencies (if using)
+vendor/
+
+# IDEs and Editors
+.vscode/
+.idea/
+
+# Cache / Sessions / Uploads
+cache/
+tmp/
+*.bak
+*.swp
+*.tmp
+
+# Node (if used for frontend build)
+node_modules/
+dist/
