@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     pkg-config
 
 # Install MongoDB extension WITH SSL support
-RUN pecl install mongodb \
+RUN pecl install mongodb-1.16.2 \
     && docker-php-ext-enable mongodb
 
 # Enable Apache rewrite
