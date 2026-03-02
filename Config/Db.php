@@ -1,6 +1,9 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php'; 
 
-$client = new MongoDB\Client("mongodb://localhost:27017");
-$db = $client->AriPen; 
+$mongoUri = getenv('MONGO_URI');   // Get from Render environment
+
+$client = new MongoDB\Client($mongoUri);
+
+$db = $client->AriPen;  // Your database name
 ?>
