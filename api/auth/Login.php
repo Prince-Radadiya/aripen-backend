@@ -1,4 +1,10 @@
 <?php 
+header("Access-Control-Allow-Origin: https://aripen-frontend.vercel.app");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
+header("Content-Type: application/json");
+
 require_once __DIR__ . '/../../Config/Db.php';
 
 
@@ -7,11 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 
-// header("Access-Control-Allow-Origin:  http://localhost:5173");/
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Content-Type: application/json");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Origin: https://aripen-frontend.vercel.app");
+
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -38,6 +40,7 @@ if($data){
             'eid' => $finduser['empId'],
             'role' => $role
         ];
+        unset($finduser['password']); // remove password before sending
         echo json_encode([
             'session'=>$_SESSION['user'],
              'loggedIn' => true,

@@ -1,14 +1,18 @@
 FROM php:8.2-apache
 
+# Install required system dependencies (INCLUDING SSL)
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
-    curl
+    curl \
+    libssl-dev \
+    pkg-config
 
-# Install correct MongoDB extension version
-RUN pecl install mongodb-1.16.2 \
+# Install MongoDB extension WITH SSL support
+RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
 
+# Enable Apache rewrite
 RUN a2enmod rewrite
 
 # Install Composer
