@@ -27,37 +27,41 @@ if($data){
     $email =  htmlspecialchars($data['email']);
     $password =  htmlspecialchars($data['password']);
 
-    
-    $finduser = $db->User->findOne(['email'=>$email]);
+    try{
+         $finduser = $db->User->findOne(['email'=>$email]);
     
    if($finduser){
     $role =$finduser['role'];
 
-    $checkpass = $finduser['password'];
-    if(password_verify($password ,$checkpass)){
+        $checkpass = $finduser['password'];
+        if(password_verify($password ,$checkpass)){
 
-        $_SESSION['user'] = [
-            'eid' => $finduser['empId'],
-            'role' => $role
-        ];
-        unset($finduser['password']); // remove password before sending
-        echo json_encode([
-            'session'=>$_SESSION['user'],
-             'loggedIn' => true,
-             "UserData"=> $finduser
-        ]);
-    }else{
+            $_SESSION['user'] = [
+                'eid' => $finduser['empId'],
+                'role' => $role
+            ];
+            unset($finduser['password']); // remove password before sending
+            echo json_encode([
+                'session'=>$_SESSION['user'],
+                'loggedIn' => true,
+                "UserData"=> $finduser
+            ]);
+        }else{
          echo json_encode([
             'nya'=>'notlogin'
         ]);
-    }
+        }
    }else{
     echo json_encode([
             'nya'=>'user not found'
         ]);
    }
-
-  
+    }catch(){
+        echo json_encode([
+            'nya'=>'error'
+        ]);
+    }
+   
 }
 
 ?>
