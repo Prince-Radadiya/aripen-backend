@@ -1,5 +1,13 @@
 <?php 
-header("Access-Control-Allow-Origin: https://aripen-frontend.vercel.app");
+$allowedOrigins = [
+    "http://localhost:5173",
+    "https://aripen-frontend.vercel.app"
+];
+
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+}
+
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
@@ -30,38 +38,38 @@ if($data){
     try{
          $finduser = $db->User->findOne(['email'=>$email]);
     
-   if($finduser){
-    $role =$finduser['role'];
+        if($finduser){
+            $role =$finduser['role'];
 
-        $checkpass = $finduser['password'];
-        if(password_verify($password ,$checkpass)){
+            $checkpass = $finduser['password'];
+            if(password_verify($password ,$checkpass)){
 
-            $_SESSION['user'] = [
-                'eid' => $finduser['empId'],
-                'role' => $role
-            ];
-            unset($finduser['password']); // remove password before sending
-            echo json_encode([
-                'session'=>$_SESSION['user'],
-                'loggedIn' => true,
-                "UserData"=> $finduser
+                $_SESSION['user'] = [
+                    'eid' => $finduser['empId'],
+                    'role' => $role
+                ];
+                unset($finduser['password']); // remove password before sending
+                echo json_encode([
+                    'session'=>$_SESSION['user'],
+                    'loggedIn' => true,
+                    "UserData"=> $finduser
             ]);
+            }else{
+                echo json_encode([
+                'nya'=>'notlogin'
+            ]);
+            }
         }else{
-         echo json_encode([
-            'nya'=>'notlogin'
+            echo json_encode([
+                'nya'=>'user not found'
         ]);
         }
-   }else{
+    }catch(Exception $e){
     echo json_encode([
-            'nya'=>'user not found'
-        ]);
-   }
-    }catch(){
-        echo json_encode([
-            'nya'=>'error'
-        ]);
-    }
+        'nya'=>'error',
+        'message' => $e->getMessage()
+    ]);
+}
    
 }
-
 ?>

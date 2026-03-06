@@ -1,11 +1,18 @@
 <?php 
+$allowedOrigins = [
+    "http://localhost:5173",
+    "https://aripen-frontend.vercel.app"
+];
 
-// header("Access-Control-Allow-Origin: http://localhost:5173");/
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+}
+
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Origin: https://aripen-frontend.vercel.app");
+
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
