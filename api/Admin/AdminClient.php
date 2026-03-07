@@ -31,11 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(); 
 }
 
-$clients =$Clients_collection->find();
-
+$clients = $Clients_collection->find();
 $clientsArrayy = iterator_to_array($clients, false);
-if ($clientsArrayy) {
-  echo json_encode($clientsArrayy);
-}
 
+echo json_encode($clientsArrayy);
+exit();
 ?>
