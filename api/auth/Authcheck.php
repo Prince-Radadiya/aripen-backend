@@ -1,26 +1,48 @@
 <?php
+
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => 'aripen-backend.onrender.com',
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'None'
+]);
+
+session_start();
+
 $allowedOrigins = [
     "http://localhost:5173",
     "https://aripen-frontend.vercel.app"
 ];
 
-if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
-    header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if (in_array($origin, $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: $origin");
 }
+
 header("Access-Control-Allow-Credentials: true");
-header("Content-Type: application/json");
 header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods:GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Content-Type: application/json");
 
-session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
-if(isset($_SESSION['user'])) {
+if (isset($_SESSION['user'])) {
+
     echo json_encode([
-        'loggedIn' => true,
-        'user' => $_SESSION['user']
+        "loggedIn" => true,
+        "user" => $_SESSION['user']
     ]);
-} else{
+
+} else {
+
     echo json_encode([
-        'loggedIn' => false
+        "loggedIn" => false,
+        "message" => "session expired"
     ]);
 }

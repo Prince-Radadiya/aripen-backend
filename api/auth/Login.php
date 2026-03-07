@@ -1,12 +1,13 @@
 <?php
 
-ini_set('session.cookie_samesite', 'None');
-ini_set('session.cookie_secure', '1');
+// ini_set('session.cookie_samesite', 'None');
+// ini_set('session.cookie_secure', '1');
 ini_set('session.save_path', sys_get_temp_dir());
 
 session_set_cookie_params([
     'lifetime' => 0,
     'path' => '/',
+    'domain' => 'aripen-backend.onrender.com',
     'secure' => true,
     'httponly' => true,
     'samesite' => 'None'
@@ -24,7 +25,7 @@ $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: $origin");
 }
-
+header("Access-Control-Expose-Headers: Set-Cookie");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
